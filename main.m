@@ -16,7 +16,7 @@ function [] = main()
   Y_pred_train = X_train*W;
   Y_pred_test = X_test*W;
   
-  errors(Y_train, Y_test, Y_pred_train, Y_pred_test)
+  [NR_e_log_train, NR_e_log_test, NR_e_01_train, NR_e_01_test] = errors(Y_train, Y_test, Y_pred_train, Y_pred_test);
   
   f = figure();
   hist(W);
@@ -30,9 +30,13 @@ function [] = main()
   csvwrite('results/W_SGD.txt', W);
 
   Y_pred_train = X_train*W;
-  Y_pred_test = X_test*W;
-  
+  Y_pred_test = X_test*W; 
   errors(Y_train, Y_test, Y_pred_train, Y_pred_test)
+  epoch_error(Y_train, Y_test, Y_pred_train, Y_pred_test, W, W_epoch, X_train, NR_e_log_train, NR_e_01_train);
+
+  f = figure();
+  hist(W);
+  title('Histogram wag - stochastyczny spadek wzdluz gradientu');
+  saveas(f, 'results/histogram_SGD.png');
   
-  epoch_error(Y_train, Y_test, Y_pred_train, Y_pred_test, W, W_epoch, X_train)
-end
+ end
